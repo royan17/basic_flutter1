@@ -15,7 +15,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   TextEditingController etInput = TextEditingController();
-  List<String> listTemperature = ['Kelvin', 'Reamur', 'Fahrenheit'];
+  List<String> listTemperature = ['Kelvin', 'Reaumur', 'Fahrenheit'];
+  String selectedDropdown = 'Kelvin';
+  int calculationResult = 0;
+
+  void onDropdownChange(Object? value) {
+    return setState(() {
+      selectedDropdown = value.toString();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +36,7 @@ class _MyAppState extends State<MyApp> {
           child: Column(children: [
             TextField(
               controller: etInput,
+              keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 labelText: 'Celcius',
                 hintText: 'Enter the temperature in celcius',
@@ -37,33 +46,54 @@ class _MyAppState extends State<MyApp> {
             const SizedBox(height: 8),
             DropdownButton(
                 isExpanded: true,
-                value: 'Fahrenheit',
+                value: selectedDropdown,
                 items: listTemperature.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
                   );
                 }).toList(),
-                onChanged: (value) {}),
+                onChanged: (value) {
+                  setState(() {
+                    onDropdownChange(value);
+                  });
+                }),
             const SizedBox(
               height: 10,
             ),
-            Text(
+            const Text(
               'Hasil',
               style: TextStyle(fontSize: 20),
             ),
             Text(
-              '356',
+              '$calculationResult',
               style: TextStyle(fontSize: 32),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        if (etInput.text.isNotEmpty) {
+                          calculationResult = int.parse(etInput.text) * 2;
+                          switch (selectedDropdown) {
+                            case 'Kelvin':
+                              calculationResult = int.parse(etInput.text) * 2;
+                              break;
+                            case 'Reaumur':
+                              calculationResult = int.parse(etInput.text) * 4;
+                              break;
+                            case 'Fahrenheit':
+                              calculationResult = int.parse(etInput.text) * 9;
+                              break;
+                          }
+                        }
+                      });
+                    },
                     child: const Text('Konversi Suhu'),
                   ),
                 )
