@@ -1,89 +1,77 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(Myapp());
+  runApp(
+    const MyApp(),
+  );
 }
 
-class Myapp extends StatelessWidget {
-  const Myapp({Key? key}):super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController etInput = TextEditingController();
+  List<String> listTemperature = ['Kelvin', 'Reamur', 'Fahrenheit'];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Basic Flutter',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      title: 'Welcome to Flutter',
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("Basic Flutter"),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        appBar: AppBar(title: const Text('Converter Suhu ')),
+        body: Container(
+          margin: const EdgeInsets.all(8.0),
+          child: Column(children: [
+            TextField(
+              controller: etInput,
+              decoration: const InputDecoration(
+                labelText: 'Celcius',
+                hintText: 'Enter the temperature in celcius',
+              ),
+              onChanged: (value) {},
+            ),
+            const SizedBox(height: 8),
+            DropdownButton(
+                isExpanded: true,
+                value: 'Fahrenheit',
+                items: listTemperature.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (value) {}),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Hasil',
+              style: TextStyle(fontSize: 20),
+            ),
+            Text(
+              '356',
+              style: TextStyle(fontSize: 32),
+            ),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
                 Expanded(
-                 child: Image.asset(
-                    'assets/images/image2.jpeg',
-                    fit: BoxFit.fitWidth,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('Konversi Suhu'),
                   ),
-                ),
+                )
               ],
             ),
-            Container(
-              child: Center(
-                child: Text('Hello World!'),
-              ),
-            ),
-          ],
-
-        ),
-
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        drawer: Drawer(
-          child: ListView(
-            children: <Widget> [
-              DrawerHeader(child: Text('Header Drawer'),
-                decoration: BoxDecoration(
-                  color:Colors.blue,
-                ),
-              ),
-              ListTile(
-                title: Text('Item 1'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text('Item 1'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ]
+            const SizedBox(height: 10),
+            const Text('Riwayat Konversi', style: TextStyle(fontSize: 20)),
+          ]),
         ),
       ),
     );
