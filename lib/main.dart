@@ -17,11 +17,32 @@ class _MyAppState extends State<MyApp> {
   TextEditingController etInput = TextEditingController();
   List<String> listTemperature = ['Kelvin', 'Reaumur', 'Fahrenheit'];
   String selectedDropdown = 'Kelvin';
-  int calculationResult = 0;
+  double calculationResult = 0.0;
 
   void onDropdownChange(Object? value) {
     return setState(() {
       selectedDropdown = value.toString();
+    });
+  }
+
+  void temperatureConversion() {
+    return setState(() {
+      if (etInput.text.isNotEmpty) {
+        switch (selectedDropdown) {
+          case 'Kelvin':
+            calculationResult =
+                int.parse(etInput.text) + 273.15;
+            break;
+          case 'Reaumur':
+            calculationResult =
+                int.parse(etInput.text) * 4 / 5;
+            break;
+          case 'Fahrenheit':
+            calculationResult =
+                (int.parse(etInput.text) * 9 / 5) + 32;
+            break;
+        }
+      }
     });
   }
 
@@ -78,20 +99,7 @@ class _MyAppState extends State<MyApp> {
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        if (etInput.text.isNotEmpty) {
-                          calculationResult = int.parse(etInput.text) * 2;
-                          switch (selectedDropdown) {
-                            case 'Kelvin':
-                              calculationResult = int.parse(etInput.text) * 2;
-                              break;
-                            case 'Reaumur':
-                              calculationResult = int.parse(etInput.text) * 4;
-                              break;
-                            case 'Fahrenheit':
-                              calculationResult = int.parse(etInput.text) * 9;
-                              break;
-                          }
-                        }
+                        temperatureConversion();
                       });
                     },
                     child: const Text('Konversi Suhu'),
