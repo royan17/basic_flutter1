@@ -18,6 +18,7 @@ class _MyAppState extends State<MyApp> {
   List<String> listTemperature = ['Kelvin', 'Reaumur', 'Fahrenheit'];
   String selectedDropdown = 'Kelvin';
   double calculationResult = 0.0;
+  List<String> listResult = [];
 
   void onDropdownChange(Object? value) {
     return setState(() {
@@ -30,18 +31,19 @@ class _MyAppState extends State<MyApp> {
       if (etInput.text.isNotEmpty) {
         switch (selectedDropdown) {
           case 'Kelvin':
-            calculationResult =
-                int.parse(etInput.text) + 273.15;
+            calculationResult = int.parse(etInput.text) + 273.15;
+
             break;
           case 'Reaumur':
-            calculationResult =
-                int.parse(etInput.text) * 4 / 5;
+            calculationResult = int.parse(etInput.text) * 4 / 5;
+
             break;
           case 'Fahrenheit':
-            calculationResult =
-                (int.parse(etInput.text) * 9 / 5) + 32;
+            calculationResult = (int.parse(etInput.text) * 9 / 5) + 32;
+
             break;
         }
+        listResult.add('Konversi dari ${etInput.text} celcius ke ${selectedDropdown} dengan hasil : ${calculationResult.toString()}');
       }
     });
   }
@@ -109,6 +111,12 @@ class _MyAppState extends State<MyApp> {
             ),
             const SizedBox(height: 10),
             const Text('Riwayat Konversi', style: TextStyle(fontSize: 20)),
+            Expanded(
+                child: ListView.builder(
+                    itemCount: listResult.length,
+                    itemBuilder: (context, index) {
+                      return Text(listResult[index]);
+                    }))
           ]),
         ),
       ),
